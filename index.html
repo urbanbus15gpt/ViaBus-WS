@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Réseau ViaBus</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
+<style id="css">
+:root{--fond:#F4F5F9;--carte:#FFFFFF;--texte:#141A2A;--discret:#4A5468;--titre:#8A5600;--champ:#EEF0F6;--bord:#CBD1E0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fond:#0F1320;--carte:#1A2033;--texte:#F2F4F8;--discret:#A9B2C7;--titre:#FFB020;--champ:#252C44;--bord:#343C58}}
+:root[data-theme="dark"]{--fond:#0F1320;--carte:#1A2033;--texte:#F2F4F8;--discret:#A9B2C7;--titre:#FFB020;--champ:#252C44;--bord:#343C58}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--texte);font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.w{max-width:1160px;margin:0 auto;padding:0 24px}
+header.w{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding-top:20px;padding-bottom:20px}
+.logo,h1,h2,h3,.b,.nomx{font-family:'Space Grotesk',Inter,sans-serif}
+.logo{font-size:22px;font-weight:700}
+nav{display:flex;flex-wrap:wrap;gap:20px;font-weight:500}
+h1{font-size:clamp(36px,6vw,64px);line-height:1.05;margin:56px 0 16px;max-width:760px}
+.lead{font-size:18px;color:var(--discret);max-width:620px;margin:0 0 28px}
+.btns{display:flex;flex-wrap:wrap;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:12px;font-weight:700;font-size:16px;background:#FFB020;color:#1A1300}
+.btn.d{background:#5865F2;color:#fff}
+section{padding-top:56px}
+h2{font-size:30px;margin:0 0 6px}
+h3{font-size:20px;margin:28px 0 12px;color:var(--titre)}
+.sub{color:var(--discret);margin:0 0 8px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.c{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center}
+.b{min-width:58px;height:46px;padding:0 10px;border-radius:12px;font-size:22px;font-weight:700;line-height:46px;text-align:center;white-space:nowrap;flex:none}
+.t{display:flex;flex-direction:column;gap:3px;font-weight:600}
+.t span{font-weight:400;font-size:13px;color:var(--discret)}
+.nomx{font-size:20px}
+.cta{background:var(--carte);border:1px solid var(--bord);border-radius:18px;padding:32px 28px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+footer{padding:40px 24px 110px;color:var(--discret);font-size:14px}
+.in{width:100%;min-height:40px;padding:0 10px;border-radius:8px;border:1px solid var(--bord);background:var(--champ);color:var(--texte);font:inherit}
+.cols{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.ed{align-items:flex-start}
+.pe{display:flex;gap:8px;align-items:center}
+.pe input[type=color]{width:56px;height:40px;padding:2px;flex:none}
+.x{min-height:40px;padding:0 12px;border-radius:8px;border:1px solid var(--bord);background:transparent;color:var(--texte);font:inherit;cursor:pointer}
+.plus{margin-top:12px}
+.fl{display:block;font-size:13px;color:var(--discret);margin:12px 0 4px}
+.mod{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));min-height:48px;padding:0 22px;border-radius:24px;border:0;background:#FFB020;color:#1A1300;font:700 15px Inter,sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.barre{position:fixed;left:0;right:0;bottom:0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--carte);border-top:1px solid var(--bord)}
+.barre .btn{min-height:44px;padding:0 20px;border:0;cursor:pointer;font-family:inherit}
+.note{color:var(--discret);font-size:14px;margin:12px 0 0}
+.btn.p{background:var(--champ);color:var(--texte);border:1px solid var(--bord);cursor:pointer;font-family:inherit}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));width:min(92vw,460px);display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:12px;background:var(--carte);color:var(--texte);border:1px solid var(--bord);box-shadow:0 4px 18px rgba(0,0,0,.3);z-index:10}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="application/json" id="donnees">{"nom":"Réseau ViaBus","accroche":"Le réseau de bus du jeu, ligne par ligne.","intro":"Retrouve toutes les lignes du réseau, leurs terminus et leurs exploitants, puis rejoins le jeu et la communauté.","liens":{"jeu":"https://www.roblox.com/share?code=51179456ab221c48b318707c57ad4446&type=ExperienceDetails&stamp=1794913021314","discord":"https://discord.gg/Vs4ghwHVg"},"groupes":[{"titre":"Lignes urbaines / Scolaire","lignes":[{"code":"1","fond":"#0000FF","route":"Gare Routière ↔ Quartier Résidentiel","expl":"ViaBus"},{"code":"2","fond":"#FF0000","route":"Montagne ↔ Gare Routière","expl":"ViaBus"},{"code":"2b","fond":"#ffea00","route":"G.R. Flandres Dunkerque ↔ Montagne","expl":"BM"},{"code":"3","fond":"#17FF74","route":"Place Talla ↔ Conseil Départemental","expl":"ViaBus"},{"code":"4","fond":"#556434","route":"C.Cial CAP 3000 ↔ Gare Routière","expl":"ViaBus"},{"code":"5","fond":"#FF5500","route":"Conseil Départemental ↔ Montagne","expl":"ViaBus"},{"code":"6","fond":"#0DFF00","route":"Conseil Départemental ↔ Gare Routière","expl":"ViaBus"},{"code":"7","fond":"#8000ff","route":"Saint Cirq Bourg ↔ 8 mai 1980","expl":"BM"},{"code":"8","fond":"#9600FF","route":"Gare Routière ↔ Portes des Talla","expl":"ViaBus"},{"code":"9","fond":"#00AA7F","route":"Lycée Professionnel ↔ Montagne","expl":"ViaBus"},{"code":"S30","fond":"#e01010","route":"Flandres Dunkerque ↔ Jules Lesven ","expl":"ViaBus"}]},{"titre":"Lignes Tzen","lignes":[{"code":"Tzen 1","fond":"#AA007F","route":"Gare Routière ↔ Flandres Dunkerque","expl":"ViaBus"},{"code":"Tzen 2","fond":"#00AAFF","route":"Conseil Départemental ↔ Flandres Dunkerque","expl":"ViaBus"}]},{"titre":"Day’Cab","lignes":[{"code":"A","fond":"#db0000","route":"Flandres Dunkerque ↔ Gare SNCF","expl":"Day'Cab"},{"code":"B","fond":"#0f00e0","route":"Gare SNCF ↔ Montagne","expl":"Day'Cab "},{"code":"C","fond":"#00ff33","route":"Flandres Dunkerque ↔ Conseil Départemental","expl":"Day'Cab"},{"code":"D","fond":"#ffa200","route":"Lycée Profesionel ↔ Montagne Via Conseil dep","expl":"Day'Cab"},{"code":"E","fond":"#5e00bd","route":"Quartier Nord ↔ Lycée Profesionel","expl":"Day'Cab"}]},{"titre":"NoctiCab (lignes de nuit)","lignes":[{"code":"NT1","fond":"#db0000","route":"Flandres Dunkerque ↔ Gare SNCF","expl":"NoctiCab"},{"code":"NT2","fond":"#002aff","route":"Gare SNCF ↔ Montagne","expl":"NoctiCab"},{"code":"NT3","fond":"#73ff00","route":"Flandres Dunkerque ↔ Conseil Départemental","expl":"NoctiCab"},{"code":"NT4","fond":"#ffa200","route":"Lycée Profesionel ↔ Montagne Via Conseil dep","expl":"NoctiCab"},{"code":"NT5","fond":"#a600ff","route":"Quartier Nord ↔ Lycée Professionnel","expl":"NoctiCab"}]}],"exploitants":[{"nom":"ViaBus","desc":"Exploitant Principal de l'agglomération "},{"nom":"BM","desc":"Exploitant Indépendant"},{"nom":"Trans’Cab","desc":"Exploitant Secondaire de l'agglomération "}]}</script>
+<script id="code">
+(function () {
+var FONTS = '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">';
+var etat = JSON.parse(document.getElementById('donnees').textContent);
+var copie = null, edition = false, peutEditer = false, artifact = null, message = '';
+var app = document.getElementById('app');
+
+function h(tag, attrs) {
+  var e = document.createElement(tag);
+  for (var k in (attrs || {})) {
+    var v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'style') e.style.cssText = v;
+    else if (k === 'value') e.value = v;
+    else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v);
+  }
+  for (var i = 2; i < arguments.length; i++) {
+    [].concat(arguments[i]).forEach(function (c) {
+      if (c == null || c === false) return;
+      e.append(c.nodeType ? c : document.createTextNode(c));
+    });
+  }
+  return e;
+}
+
+function texteSur(hex) {
+  var n = parseInt((hex || '#000000').slice(1), 16);
+  var f = function (c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  var l = 0.2126 * f((n >> 16) & 255) + 0.7152 * f((n >> 8) & 255) + 0.0722 * f(n & 255);
+  return (l + 0.05) / 0.05 > 1.05 / (l + 0.05) ? '#0B0B0B' : '#FFFFFF';
+}
+function sur(url) { return /^https?:\/\//i.test(url || '') ? url : '#'; }
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function setMessage(t) { message = t; var n = document.querySelector('.barre .note'); if (n) n.textContent = t; }
+
+function champ(obj, cle, placeholder) {
+  return h('input', { class: 'in', value: obj[cle] || '', placeholder: placeholder, 'aria-label': placeholder,
+    oninput: function (ev) { obj[cle] = ev.target.value; } });
+}
+function lab(t) { return h('label', { class: 'fl' }, t); }
+
+function badge(l) { var b = h('div', { class: 'b' }); majBadge(b, l); return b; }
+function majBadge(b, l) { b.textContent = l.code; b.style.background = l.fond; b.style.color = texteSur(l.fond); }
+
+function boutons(d) {
+  return h('div', { class: 'btns' },
+    h('a', { class: 'btn', href: sur(d.liens.jeu), target: '_blank', rel: 'noopener' }, 'Rejoindre le jeu'),
+    h('a', { class: 'btn d', href: sur(d.liens.discord), target: '_blank', rel: 'noopener' }, 'Rejoindre le Discord'),
+    h('button', { class: 'btn p', onclick: function () { partager(d); } }, 'Partager le site'));
+}
+
+var LIEN_SITE = 'https://claude.ai/artifact/7d6qVgfaimCM5WTuDAet2h';
+
+function toast(contenu, duree) {
+  var ancien = document.querySelector('.toast');
+  if (ancien) ancien.remove();
+  var t = h('div', { class: 'toast', role: 'status' }, contenu);
+  document.body.append(t);
+  if (duree) setTimeout(function () { t.remove(); }, duree);
+  return t;
+}
+
+function afficherLien(url) {
+  var saisie = h('input', { class: 'in', value: url, readonly: 'readonly', 'aria-label': 'Lien du site',
+    onfocus: function (ev) { ev.target.select(); } });
+  var t = toast([h('span', null, 'Copie ce lien et partage-le :'), saisie,
+    h('button', { class: 'x', onclick: function () { t.remove(); } }, 'Fermer')]);
+  saisie.focus();
+  saisie.select();
+}
+
+// Partage : menu de partage du téléphone si possible, sinon copie du lien
+async function partager(d) {
+  var url = d.lienSite || LIEN_SITE;
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: d.nom, text: 'Découvre ' + d.nom, url: url });
+      return;
+    }
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    toast('Lien du site copié.', 2500);
+  } catch (e) {
+    afficherLien(url);
+  }
+}
+
+function accueil(d) {
+  if (!edition) {
+    var manque = peutEditer && /VOTRE/.test(d.liens.jeu + d.liens.discord);
+    return h('section', { class: 'w' }, h('h1', null, d.accroche), h('p', { class: 'lead' }, d.intro), boutons(d),
+      manque ? h('p', { class: 'note' }, 'Les liens du jeu et du Discord ne sont pas encore renseignés : clique sur « Modifier le site ».') : null);
+  }
+  return h('section', { class: 'w' }, h('h2', null, 'Informations générales'),
+    lab('Nom du réseau'), champ(d, 'nom', 'Nom du réseau'),
+    lab('Titre de la page d’accueil'), champ(d, 'accroche', 'Titre de la page d’accueil'),
+    lab('Texte sous le titre'), champ(d, 'intro', 'Texte sous le titre'),
+    lab('Lien de ton jeu Roblox'), champ(d.liens, 'jeu', 'https://www.roblox.com/games/…'),
+    lab('Lien d’invitation de ton Discord'), champ(d.liens, 'discord', 'https://discord.gg/…'),
+    lab('Lien de ton site pour le bouton Partager (vide = lien actuel)'), champ(d, 'lienSite', 'https://claude.ai/artifact/…'));
+}
+
+function carte(l) {
+  return h('div', { class: 'c' }, badge(l),
+    h('div', { class: 't' }, l.route, l.expl ? h('span', null, 'Exploitant : ' + l.expl) : null));
+}
+
+function carteEdition(g, i) {
+  var l = g.lignes[i], b = badge(l);
+  return h('div', { class: 'c ed' }, b, h('div', { class: 'cols' },
+    h('div', { class: 'pe' },
+      h('input', { class: 'in', value: l.code, 'aria-label': 'Numéro de la ligne',
+        oninput: function (ev) { l.code = ev.target.value; majBadge(b, l); } }),
+      h('input', { class: 'in', type: 'color', value: l.fond, 'aria-label': 'Couleur de la ligne',
+        oninput: function (ev) { l.fond = ev.target.value; majBadge(b, l); } })),
+    champ(l, 'route', 'Terminus (ex : Gare ↔ Centre)'),
+    champ(l, 'expl', 'Exploitant de la ligne'),
+    h('button', { class: 'x', onclick: function () { g.lignes.splice(i, 1); rendre(); } }, 'Supprimer cette ligne')));
+}
+
+function lignes(d) {
+  return h('section', { class: 'w', id: 'lignes' }, h('h2', null, 'Les lignes du réseau'),
+    h('p', { class: 'sub' }, 'Chaque ligne est desservie dans les deux sens.'),
+    d.groupes.map(function (g) {
+      return h('div', null,
+        edition ? h('div', { style: 'margin-top:28px' }, champ(g, 'titre', 'Nom de la famille de lignes')) : h('h3', null, g.titre),
+        h('div', { class: 'g' }, g.lignes.map(function (l, i) { return edition ? carteEdition(g, i) : carte(l); })),
+        edition ? h('button', { class: 'x plus', onclick: function () {
+          g.lignes.push({ code: '?', fond: '#5B6478', route: '', expl: '' }); rendre(); } }, '+ Ajouter une ligne') : null);
+    }));
+}
+
+function exploitants(d) {
+  return h('section', { class: 'w', id: 'exploitants' }, h('h2', null, 'Nos exploitants'),
+    h('p', { class: 'sub' }, 'Les entreprises qui font rouler les lignes du réseau.'),
+    h('div', { class: 'g' }, d.exploitants.map(function (x, i) {
+      if (!edition) return h('div', { class: 'c' }, h('div', { class: 't' }, h('b', { class: 'nomx' }, x.nom), x.desc ? h('span', null, x.desc) : null));
+      return h('div', { class: 'c ed' }, h('div', { class: 'cols' },
+        champ(x, 'nom', 'Nom de l’exploitant'), champ(x, 'desc', 'Description (facultatif)'),
+        h('button', { class: 'x', onclick: function () { d.exploitants.splice(i, 1); rendre(); } }, 'Supprimer cet exploitant')));
+    })),
+    edition ? h('button', { class: 'x plus', onclick: function () { d.exploitants.push({ nom: 'Nouvel exploitant', desc: '' }); rendre(); } }, '+ Ajouter un exploitant') : null);
+}
+
+function rejoindre(d) {
+  return h('section', { class: 'w', id: 'rejoindre' }, h('div', { class: 'cta' },
+    h('div', { style: 'max-width:560px' }, h('h2', null, 'Prêt à prendre le bus ?'),
+      h('p', { class: 'sub', style: 'margin:0' }, 'Rejoins le jeu pour conduire ou voyager, et le Discord pour suivre les infos du réseau.')),
+    boutons(d)));
+}
+
+function barre() {
+  return h('div', { class: 'barre' },
+    h('span', { class: 'note', style: 'margin:0' }, message || 'Mode modification : change ce que tu veux, puis enregistre.'),
+    h('button', { class: 'btn', onclick: enregistrer }, 'Enregistrer'),
+    h('button', { class: 'btn', style: 'background:var(--champ);color:var(--texte)', onclick: annuler }, 'Annuler'));
+}
+
+function rendre() {
+  var d = edition ? copie : etat;
+  document.title = d.nom;
+  app.replaceChildren(
+    h('header', { class: 'w' }, h('div', { class: 'logo' }, d.nom),
+      h('nav', null, h('a', { href: '#lignes' }, 'Les lignes'), h('a', { href: '#exploitants' }, 'Les exploitants'), h('a', { href: '#rejoindre' }, 'Nous rejoindre'))),
+    accueil(d), lignes(d), exploitants(d), rejoindre(d),
+    h('footer', { class: 'w' }, d.nom),
+    edition ? barre() : (peutEditer ? h('button', { class: 'mod', onclick: ouvrir }, 'Modifier le site') : null));
+}
+
+function ouvrir() { copie = JSON.parse(JSON.stringify(etat)); edition = true; message = ''; rendre(); window.scrollTo(0, 0); }
+function annuler() { edition = false; copie = null; rendre(); }
+
+// Le document complet est reconstruit à partir de ses sources (style, script) et des données à jour
+function construireDoc(d) {
+  var json = JSON.stringify(d).replace(/</g, '\\u003c');
+  return '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
+    '<title>' + esc(d.nom) + '</title>\n' + FONTS + '\n' +
+    '<style id="css">' + document.getElementById('css').textContent + '</style>\n</head>\n<body>\n<div id="app"></div>\n' +
+    '<script type="application/json" id="donnees">' + json + '<\/script>\n' +
+    '<script id="code">' + document.getElementById('code').textContent + '<\/script>\n</body>\n</html>\n';
+}
+
+async function enregistrer() {
+  if (!artifact || !peutEditer) return;
+  setMessage('Enregistrement en cours…');
+  try {
+    await artifact.publish(construireDoc(copie)); // la page se recharge toute seule sur la nouvelle version
+  } catch (e) {
+    var c = e && e.code;
+    if (c === 'conflict') return;
+    if (c === 'not_writer' || c === 'not_granted' || c === 'consent_required' || c === 'not_declared') {
+      peutEditer = false; edition = false; rendre(); return;
+    }
+    setMessage('Enregistrement impossible (' + (c || 'erreur') + '). Réessaie dans un instant.');
+  }
+}
+
+rendre();
+
+(async function () {
+  try {
+    if (!(window.claude && window.claude.use)) return;
+    var res = await Promise.all([window.claude.use('user'), window.claude.use('artifact')]);
+    artifact = res[1];
+    peutEditer = !!(res[0] && res[1] && res[0].isOwner()); // seul le propriétaire du site peut modifier
+    if (peutEditer && !edition) rendre();
+  } catch (e) { /* la page reste en lecture seule */ }
+})();
+})();
+</script>
+</body>
+</html>
